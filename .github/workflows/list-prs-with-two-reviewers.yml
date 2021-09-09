@@ -4,6 +4,7 @@ on:
     types:
       - labeled
       - unlabeled
+  push:
 jobs:
   notifySlack:
     name: Notify Slack
@@ -19,7 +20,7 @@ jobs:
           repo: github-actions
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo pull requests: ${{ steps.get_prs.outputs.data }}"
+      - run: "echo pull requests: '${{ steps.get_prs.outputs.data }}'"
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:

@@ -1,8 +1,9 @@
 on: push
 name: Slack Notification Demo
 jobs:
-  slackNotification:
-    name: Slack Notification
+  slackNotificationPush:
+    if: ${{ github.event_name == 'push' }}
+    name: Slack Notification Push
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -10,5 +11,17 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL: hackathon
-          SLACK_MESSAGE: Hello World
+          SLACK_MESSAGE: A commit was pushed
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_HACKATHON_CHANNEL }}
+  slackNotificationLabel:
+    if: ${{ github.event_name == 'label' && github.event.label.name == 'two-reviewers' }}
+    name: Slack Notification Label
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: hackathon
+          SLACK_MESSAGE: This Pull Request has two reviewers
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_HACKATHON_CHANNEL }}

@@ -1,0 +1,29 @@
+name: List PRs with two reviewers
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabled
+jobs:
+  notifySlack:
+    name: Notify Slack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get PRs with two reviewers
+        uses: octokit/request-action@v2
+        id: get_prs
+        with:
+          route: GET /repos/{owner}/{repo}/pulls
+          owner: nano1895pearson
+          repo: github-actions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: "echo pull requests: ${{ steps.get_prs.outputs.data }}"
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: hackathon
+          SLACK_MESSAGE: "${{ steps.get_prs.outputs.data }}"
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_HACKATHON_CHANNEL }}
+

@@ -15,7 +15,8 @@ jobs:
         uses: octokit/request-action@v2.1.0
         id: get_prs
         with:
-          route: GET /search/issues?q=label:two-reviewers+repo:nano1895pearson/github-actions
+          route: GET /search/issues
+          q: "label:two-reviewers+repo:nano1895pearson/github-actions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo pull requests: '${{ steps.get_prs.outputs.data }}'"

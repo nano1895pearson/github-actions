@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Get PRs with two reviewers
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.1.0
         id: get_prs
         with:
           route: GET /repos/{owner}/{repo}/pulls
